@@ -19,8 +19,8 @@ end
 
 -- Config
 local COOLDOWN = 1.5
-local START_SPEED = 50
-local ACCEL = 250
+local START_SPEED = 80
+local ACCEL = 400
 local LIFETIME = 1.75
 local DAMAGE = 22.5
 
@@ -367,7 +367,7 @@ local function spawnFireball(player: Player, shotId: any, originPos: any, aimPos
 
 		-- Hitbox cast: only used to detect player hits (enlarged area for leniency).
 		local hitboxMove = nextHitboxCF.Position - lastHitboxCF.Position
-		local hitboxResult = workspace:Blockcast(lastHitboxCF, hitbox.Size, hitboxMove, params)
+		local hitboxResult = workspace:Blockcast(lastHitboxCF, hitbox.Size * 2, hitboxMove, params)
 
 		local playerHit: Humanoid? = nil
 		if hitboxResult then
