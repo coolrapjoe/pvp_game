@@ -18,7 +18,7 @@ local function sfb(...)
 end
 
 -- Config
-local COOLDOWN = 1.5
+local COOLDOWN = 0.8
 local START_SPEED = 120
 local ACCEL = 600
 local LIFETIME = 1.75
