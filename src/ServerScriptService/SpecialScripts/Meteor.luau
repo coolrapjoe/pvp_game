@@ -5,6 +5,8 @@ local CollectionService = game:GetService("CollectionService")
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
 
+local abilityPredict = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("AbilityPredict")
+
 local S = {
 	COOLDOWN = 30,
 	PAVEMENT_NAME = "Pavement",
@@ -830,13 +832,7 @@ local function spawnMeteor(player: Player, shotId: any): boolean
 	if typeof(shotId) == "string" then meteor:SetAttribute("ShotId", shotId) end
 	meteor.Parent = workspace
 
-	local summonSound = Instance.new("Sound")
-	summonSound.SoundId = "rbxassetid://123038829119440"
-	summonSound.Volume = 10
-	summonSound.RollOffMaxDistance = 200
-	summonSound.Parent = workspace.Terrain
-	summonSound:Play()
-	game:GetService("Debris"):AddItem(summonSound, 10)
+	abilityPredict:FireAllClients("MeteorCast")
 
 	local hitbox = pickHitbox(meteor)
 	if not hitbox then
@@ -1126,13 +1122,7 @@ local function spawnMeteor(player: Player, shotId: any): boolean
 			impactPosSaved = targetPos
 			buryStopAt = os.clock() + S.BURY_TIME
 
-			local impactSound = Instance.new("Sound")
-			impactSound.SoundId = "rbxassetid://126734270663620"
-			impactSound.Volume = 8
-			impactSound.RollOffMaxDistance = 200
-			impactSound.Parent = workspace.Terrain
-			impactSound:Play()
-			game:GetService("Debris"):AddItem(impactSound, 10)
+			abilityPredict:FireAllClients("MeteorImpact")
 
 			if S.EXPLOSION_ENABLED then
 				preppedBlastFx, preppedOuterFx = prepImpactExplosion(meteor, impactPosSaved)

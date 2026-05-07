@@ -252,7 +252,25 @@ local function spawnPredictedBrick(ownerUserId: number, shotId: string, originPo
 	return b
 end
 
+local meteorCastSound = Instance.new("Sound")
+meteorCastSound.SoundId = "rbxassetid://123038829119440"
+meteorCastSound.Volume = 10
+meteorCastSound.Parent = SoundService
+
+local meteorImpactSound = Instance.new("Sound")
+meteorImpactSound.SoundId = "rbxassetid://126734270663620"
+meteorImpactSound.Volume = 10
+meteorImpactSound.Parent = SoundService
+
 abilityPredict.OnClientEvent:Connect(function(abilityName, ownerUserId, shotId, originPos, aimPos)
+	if abilityName == "MeteorCast" then
+		meteorCastSound:Play()
+		return
+	end
+	if abilityName == "MeteorImpact" then
+		meteorImpactSound:Play()
+		return
+	end
 	if abilityName == "BrickUltSound" then
 		brickUltSound:Play()
 		return
