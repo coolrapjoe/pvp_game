@@ -27,8 +27,6 @@ local FIREBALL_ANIM_ID = "rbxassetid://97769563564365"
 
 local activeAnimTracks: {[string]: boolean} = {}
 
-local activeAnimTracks: {[string]: boolean} = {}
-
 local function playCharacterAnim(char: Model, animId: string, speed: number?, slowSpeed: number?)
 	if activeAnimTracks[animId] then return end
 	local humanoid = char:FindFirstChildOfClass("Humanoid")
@@ -556,7 +554,7 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 			nextFireballAt = now + FIREBALL_CD
 			spawnPredictedFireball(shotId, originPos, aimPos)
 			local char = player.Character
-			if char then playCharacterAnim(char, FIREBALL_ANIM_ID, 1.5, 6) end
+			if char then playCharacterAnim(char, FIREBALL_ANIM_ID, 1.5) end
 		end
 	end
 
