@@ -19,8 +19,8 @@ end
 
 -- Config
 local COOLDOWN = 1.5
-local START_SPEED = 80
-local ACCEL = 400
+local START_SPEED = 120
+local ACCEL = 600
 local LIFETIME = 1.75
 local DAMAGE = 22.5
 

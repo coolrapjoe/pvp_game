@@ -281,8 +281,8 @@ local ABILITY_COST = {
 }
 local nextFireballAt = 0
 
-local PRED_START_SPEED = 80
-local PRED_ACCEL      = 400
+local PRED_START_SPEED = 120
+local PRED_ACCEL      = 600
 local PRED_LIFETIME   = 1.75
 local PRED_BRAKE_TIME = 0.20
 local PRED_BRAKE_DIST = 5
