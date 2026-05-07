@@ -25,6 +25,24 @@ local MAX_DIST = 600
 
 local FIREBALL_ANIM_ID = "rbxassetid://97769563564365"
 
+local FIREBALL_CAST_SOUNDS = {
+	"rbxassetid://101485035067883",
+	"rbxassetid://85998279500440",
+	"rbxassetid://108864000747313",
+}
+local fireballSoundIndex = 0
+local SoundService = game:GetService("SoundService")
+
+local function playFireballSoundLocal()
+	fireballSoundIndex = (fireballSoundIndex % #FIREBALL_CAST_SOUNDS) + 1
+	local snd = Instance.new("Sound")
+	snd.SoundId = FIREBALL_CAST_SOUNDS[fireballSoundIndex]
+	snd.Volume = 10
+	snd.Parent = SoundService
+	snd:Play()
+	game:GetService("Debris"):AddItem(snd, 5)
+end
+
 local activeAnimTracks: {[string]: boolean} = {}
 
 local function playCharacterAnim(char: Model, animId: string, speed: number?, slowSpeed: number?)
@@ -557,6 +575,7 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 			local char = player.Character
 			if char then playCharacterAnim(char, FIREBALL_ANIM_ID, 1.6) end
 			task.delay(0.4, function()
+				playFireballSoundLocal()
 				spawnPredictedFireball(shotId, originPos, aimPos)
 				useAbility:FireServer(slot, shotId, originPos, aimPos, originCF)
 			end)

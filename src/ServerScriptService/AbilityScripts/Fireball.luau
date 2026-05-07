@@ -273,15 +273,9 @@ local function spawnFireball(player: Player, shotId: any, originPos: any, aimPos
 		return
 	end
 
-	-- Cycle through cast sound effects
-	local idx = ((soundIndex[player] or 0) % #CAST_SOUNDS) + 1
-	soundIndex[player] = idx
-	local castSound = Instance.new("Sound")
-	castSound.SoundId = CAST_SOUNDS[idx]
-	castSound.Volume = 10
-	castSound.RollOffMaxDistance = 80
-	castSound.Parent = primary
-	castSound:Play()
+	-- Cast sound is handled client-side for the shooter (always audible).
+	-- Increment index server-side so it stays in sync if server sounds are added later.
+	soundIndex[player] = ((soundIndex[player] or 0) % #CAST_SOUNDS) + 1
 	game:GetService("Debris"):AddItem(castSound, 5)
 
 	local pivotCF = CFrame.new(startPos, startPos + dir)
