@@ -552,10 +552,14 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		local now = os.clock()
 		if now >= nextFireballAt then
 			nextFireballAt = now + FIREBALL_CD
-			spawnPredictedFireball(shotId, originPos, aimPos)
 			local char = player.Character
-			if char then playCharacterAnim(char, FIREBALL_ANIM_ID, 1.5) end
+			if char then playCharacterAnim(char, FIREBALL_ANIM_ID, 1.35) end
+			task.delay(0.4, function()
+				spawnPredictedFireball(shotId, originPos, aimPos)
+				useAbility:FireServer(slot, shotId, originPos, aimPos, originCF)
+			end)
 		end
+		return
 	end
 
 	useAbility:FireServer(slot, shotId, originPos, aimPos, originCF)
