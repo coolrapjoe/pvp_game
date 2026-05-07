@@ -25,7 +25,10 @@ local MAX_DIST = 600
 
 local FIREBALL_ANIM_ID = "rbxassetid://97769563564365"
 
+local activeAnimTracks: {[string]: boolean} = {}
+
 local function playCharacterAnim(char: Model, animId: string, speed: number?)
+	if activeAnimTracks[animId] then return end
 	local humanoid = char:FindFirstChildOfClass("Humanoid")
 	local animator = humanoid and humanoid:FindFirstChildOfClass("Animator")
 	if not animator then return end
@@ -35,11 +38,13 @@ local function playCharacterAnim(char: Model, animId: string, speed: number?)
 	track.Looped = false
 	track.Priority = Enum.AnimationPriority.Action4
 	pcall(function() track.RootMotionWeight = 0 end)
+	activeAnimTracks[animId] = true
 	track:Play()
 	track:AdjustSpeed(speed or 1)
 	task.spawn(function()
 		track.Stopped:Wait()
 		track:Destroy()
+		activeAnimTracks[animId] = nil
 		task.wait()
 		if humanoid and humanoid.Parent then
 			humanoid:ChangeState(Enum.HumanoidStateType.Running)
@@ -545,7 +550,7 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 			spawnPredictedFireball(shotId, originPos, aimPos)
 		end
 		local char = player.Character
-		if char then playCharacterAnim(char, FIREBALL_ANIM_ID, 1.4) end
+		if char then playCharacterAnim(char, FIREBALL_ANIM_ID, 1.5) end
 	end
 
 	useAbility:FireServer(slot, shotId, originPos, aimPos, originCF)
