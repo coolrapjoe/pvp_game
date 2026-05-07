@@ -27,7 +27,9 @@ local FIREBALL_ANIM_ID = "rbxassetid://97769563564365"
 
 local activeAnimTracks: {[string]: boolean} = {}
 
-local function playCharacterAnim(char: Model, animId: string, speed: number?)
+local activeAnimTracks: {[string]: boolean} = {}
+
+local function playCharacterAnim(char: Model, animId: string, speed: number?, slowSpeed: number?)
 	if activeAnimTracks[animId] then return end
 	local humanoid = char:FindFirstChildOfClass("Humanoid")
 	local animator = humanoid and humanoid:FindFirstChildOfClass("Animator")
@@ -39,12 +41,17 @@ local function playCharacterAnim(char: Model, animId: string, speed: number?)
 	track.Priority = Enum.AnimationPriority.Action4
 	pcall(function() track.RootMotionWeight = 0 end)
 	activeAnimTracks[animId] = true
+	local origSpeed = humanoid.WalkSpeed
+	if slowSpeed then humanoid.WalkSpeed = slowSpeed end
 	track:Play()
 	track:AdjustSpeed(speed or 1)
 	task.spawn(function()
 		track.Stopped:Wait()
 		track:Destroy()
 		activeAnimTracks[animId] = nil
+		if slowSpeed and humanoid and humanoid.Parent then
+			humanoid.WalkSpeed = origSpeed
+		end
 		task.wait()
 		if humanoid and humanoid.Parent then
 			humanoid:ChangeState(Enum.HumanoidStateType.Running)
@@ -264,7 +271,7 @@ end)
 -- Fireball prediction (owner only) — moves and collides like the server
 -- ============================================================
 
-local FIREBALL_CD = 1  -- must match server COOLDOWN in Fireball.luau
+local FIREBALL_CD = 1.5  -- must match server COOLDOWN in Fireball.luau
 
 local ABILITY_COST = {
 	Fireball = 1,
@@ -550,7 +557,7 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 			spawnPredictedFireball(shotId, originPos, aimPos)
 		end
 		local char = player.Character
-		if char then playCharacterAnim(char, FIREBALL_ANIM_ID, 1.5) end
+		if char then playCharacterAnim(char, FIREBALL_ANIM_ID, 1.5, 6) end
 	end
 
 	useAbility:FireServer(slot, shotId, originPos, aimPos, originCF)
