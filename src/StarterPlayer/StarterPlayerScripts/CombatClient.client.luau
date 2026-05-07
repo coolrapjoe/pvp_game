@@ -23,6 +23,30 @@ local fireballTemplate = ReplicatedStorage:WaitForChild("Projectiles"):WaitForCh
 
 local MAX_DIST = 600
 
+local FIREBALL_ANIM_ID = "rbxassetid://97769563564365"
+
+local function playCharacterAnim(char: Model, animId: string, speed: number?)
+	local humanoid = char:FindFirstChildOfClass("Humanoid")
+	local animator = humanoid and humanoid:FindFirstChildOfClass("Animator")
+	if not animator then return end
+	local anim = Instance.new("Animation")
+	anim.AnimationId = animId
+	local track = animator:LoadAnimation(anim)
+	track.Looped = false
+	track.Priority = Enum.AnimationPriority.Action4
+	pcall(function() track.RootMotionWeight = 0 end)
+	track:Play()
+	track:AdjustSpeed(speed or 1)
+	task.spawn(function()
+		track.Stopped:Wait()
+		track:Destroy()
+		task.wait()
+		if humanoid and humanoid.Parent then
+			humanoid:ChangeState(Enum.HumanoidStateType.Running)
+		end
+	end)
+end
+
 local brickUltSound = Instance.new("Sound")
 brickUltSound.SoundId = "rbxassetid://119310967434859"
 brickUltSound.Volume = 10
@@ -520,6 +544,8 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 			nextFireballAt = now + FIREBALL_CD
 			spawnPredictedFireball(shotId, originPos, aimPos)
 		end
+		local char = player.Character
+		if char then playCharacterAnim(char, FIREBALL_ANIM_ID, 1.4) end
 	end
 
 	useAbility:FireServer(slot, shotId, originPos, aimPos, originCF)
