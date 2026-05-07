@@ -315,7 +315,9 @@ local function spawnPredictedFireball(shotId: string, originPos: Vector3, aimPos
 	end
 	local dir = d.Unit
 
-	local startPos = originPos + Vector3.new(0, 2, 0) + dir * 4
+	local camFlat = Vector3.new(camera.CFrame.LookVector.X, 0, camera.CFrame.LookVector.Z)
+	if camFlat.Magnitude > 0.01 then camFlat = camFlat.Unit else camFlat = Vector3.new(dir.X, 0, dir.Z).Unit end
+	local startPos = originPos + Vector3.new(0, 2, 0) + camFlat * 3
 	local ball = fireballTemplate:Clone()
 	ball.Name = "PredictedFireball"
 	ball:SetAttribute("ShotId", shotId)

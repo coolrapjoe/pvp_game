@@ -246,7 +246,9 @@ local function spawnFireball(player: Player, shotId: any, originPos: any, aimPos
 	local aim = (typeof(aimPos) == "Vector3") and clampAim(clientPos, aimPos) or (clientPos + fallbackLook * 30)
 	local dir = dirFromAim(clientPos, aim, fallbackLook)
 
-	local startPos = clientPos + Vector3.new(0, 2, 0) + dir * 4
+	local flatFace = Vector3.new(hrp.CFrame.LookVector.X, 0, hrp.CFrame.LookVector.Z)
+	if flatFace.Magnitude > 0.01 then flatFace = flatFace.Unit else flatFace = Vector3.new(dir.X, 0, dir.Z).Unit end
+	local startPos = clientPos + Vector3.new(0, 2, 0) + flatFace * 3
 
 	local ball = FIREBALL_TEMPLATE:Clone()
 	ball.Name = "FireballShot"
