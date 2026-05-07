@@ -276,7 +276,7 @@ local function spawnFireball(player: Player, shotId: any, originPos: any, aimPos
 	soundIndex[player] = idx
 	local castSound = Instance.new("Sound")
 	castSound.SoundId = CAST_SOUNDS[idx]
-	castSound.Volume = 1
+	castSound.Volume = 10
 	castSound.RollOffMaxDistance = 80
 	castSound.Parent = primary
 	castSound:Play()

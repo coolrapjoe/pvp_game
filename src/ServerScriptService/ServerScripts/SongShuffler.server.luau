@@ -1,6 +1,6 @@
 local SoundService = game:GetService("SoundService")
 
-local MUSIC_VOLUME = 0.4
+local MUSIC_VOLUME = 0.2
 
 local songsFolder = SoundService:WaitForChild("Songs")
 
