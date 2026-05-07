@@ -218,7 +218,7 @@ local function applyFireSlow(hum: Humanoid)
 
 	hum.WalkSpeed = math.max(6, orig * FIRE_SLOW_MULT)
 
-	task.delay(FIRE_SLOW_TIME, function()
+	task.delay(FIRE_SLOW_TIME + 0.1, function()
 		if not hum.Parent then return end
 		if (slowUntil[hum] or 0) > os.clock() then return end
 		local o = hum:GetAttribute("Fireball_OrigSpeed")
